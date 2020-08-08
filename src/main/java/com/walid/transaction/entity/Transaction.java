@@ -4,6 +4,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import static com.walid.transaction.repository.TransactionRepo.DATE_TIME_FORMAT;
@@ -22,6 +23,19 @@ public class Transaction {
     private String relatedTransaction;
 
     public Transaction(CSVRecord record) {
+        int index = 0;
+        transactionId = record.get(index++);
+        fromAccountId = record.get(index++);
+        toAccountId = record.get(index++);
+        createAt = LocalDateTime.parse(record.get(index++), DATE_TIME_FORMAT);
+        amount = new BigDecimal(record.get(index++));
+        transactionType = Type.valueOf(record.get(index++));
+        if (index < record.size()) {
+            relatedTransaction = record.get(index++);
+        }
+    }
+
+    public Transaction(List<String> record) {
         int index = 0;
         transactionId = record.get(index++);
         fromAccountId = record.get(index++);
