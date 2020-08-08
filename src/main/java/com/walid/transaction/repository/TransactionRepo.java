@@ -5,6 +5,7 @@ import com.walid.transaction.entity.Transaction;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * @author Walid Moustaf
@@ -21,4 +22,8 @@ public interface TransactionRepo {
     boolean remove(String txnId);
 
     Transaction find(String txnId);
+
+    int getCount();
+
+    List<Transaction> getTransactions();
 }
