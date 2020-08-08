@@ -14,8 +14,8 @@ import java.util.Arrays;
  */
 public class Main {
 
-    public static final TransactionRepo REPO = new TransactionRepoImpl();
     private static final String[] HELP_ALIASES = { "-h", "-help", "--help" };
+    private static final TransactionRepo REPO = new TransactionRepoImpl();
     private static final BalanceEnquiryController ENQUIRY_CONTROLLER = new BalanceEnquiryControllerImpl(
         REPO);
 
