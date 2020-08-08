@@ -1,9 +1,11 @@
 package com.walid.transaction.repository;
 
+import com.walid.transaction.entity.RelativeBalance;
 import com.walid.transaction.entity.Transaction;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -26,4 +28,6 @@ public interface TransactionRepo {
     int getCount();
 
     List<Transaction> getTransactions();
+
+    RelativeBalance getRelativeBalance(String accountId, LocalDateTime from, LocalDateTime to);
 }

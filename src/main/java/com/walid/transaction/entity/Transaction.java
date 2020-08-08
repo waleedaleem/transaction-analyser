@@ -48,6 +48,24 @@ public class Transaction {
         }
     }
 
+    public boolean touchesAccount(String accountId) {
+        return fromAccountId.equals(accountId) || toAccountId.equals(accountId);
+    }
+
+    public BigDecimal toAccountBalance(String accountId) {
+        if (fromAccountId.equals(accountId)) {
+            return amount.negate();
+        } else if (toAccountId.equals(accountId)) {
+            return amount;
+        } else {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public boolean withinInterval(LocalDateTime startDate, LocalDateTime endDate) {
+        return createAt.compareTo(startDate) >= 0 && createAt.compareTo(endDate) <= 0;
+    }
+
     public String getTransactionId() {
         return transactionId;
     }
