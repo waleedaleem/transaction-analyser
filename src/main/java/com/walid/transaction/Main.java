@@ -21,6 +21,8 @@ public class Main {
                 .println("usage: java -jar transaction-analyser <startup transactions CSV file>");
             System.exit(0);
         }
-        REPO.loadTransactions(new FileInputStream(args[0]));
+        try (FileInputStream txnInputStream = new FileInputStream(args[0])) {
+            REPO.loadTransactions(txnInputStream);
+        }
     }
 }
