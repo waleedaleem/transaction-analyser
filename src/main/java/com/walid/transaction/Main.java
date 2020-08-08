@@ -2,6 +2,8 @@ package com.walid.transaction;
 
 import com.walid.transaction.repository.TransactionRepo;
 import com.walid.transaction.repository.TransactionRepoImpl;
+import com.walid.transaction.service.BalanceEnquiryController;
+import com.walid.transaction.service.BalanceEnquiryControllerImpl;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,6 +16,8 @@ public class Main {
 
     public static final TransactionRepo REPO = new TransactionRepoImpl();
     private static final String[] HELP_ALIASES = { "-h", "-help", "--help" };
+    private static final BalanceEnquiryController ENQUIRY_CONTROLLER = new BalanceEnquiryControllerImpl(
+        REPO);
 
     public static void main(String[] args) throws IOException {
         if (args.length != 1 || Arrays.asList(HELP_ALIASES).contains(args[0])) {
@@ -24,5 +28,6 @@ public class Main {
         try (FileInputStream txnInputStream = new FileInputStream(args[0])) {
             REPO.loadTransactions(txnInputStream);
         }
+        ENQUIRY_CONTROLLER.serve();
     }
 }
