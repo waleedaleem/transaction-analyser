@@ -1,14 +1,18 @@
 package com.walid.transaction.repository;
 
+import com.walid.transaction.entity.RelativeBalance;
 import com.walid.transaction.entity.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.walid.transaction.repository.TransactionRepo.DATE_TIME_FORMAT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -74,5 +78,46 @@ public class TransactionRepoImplTest {
     @Test public void testFind() {
         assertNotNull(txnRepo.find("TX10001"));
         assertNull(txnRepo.find("TX_SHLDNT_BE_THERE"));
+    }
+
+    @Test public void getRelativeBalance_sample_account() {
+        String accountId = "ACC334455";
+        String from = "20/10/2018 12:00:00";
+        String to = "20/10/2018 19:00:00";
+
+        RelativeBalance actualBalance = getRelativeBalance(accountId, from, to);
+
+        RelativeBalance expectedBalance = new RelativeBalance();
+        expectedBalance.addAmount(BigDecimal.valueOf(-25.00));
+        assertEquals(expectedBalance, actualBalance);
+    }
+
+    @Test public void getRelativeBalance_unknown_account() {
+        String accountId = "unknownACC";
+        String from = "20/10/2018 12:00:00";
+        String to = "20/10/2018 19:00:00";
+
+        RelativeBalance actualBalance = getRelativeBalance(accountId, from, to);
+
+        RelativeBalance expectedBalance = new RelativeBalance();
+        assertEquals(expectedBalance, actualBalance);
+    }
+
+    @Test public void getRelativeBalance_swapped_from_and_to() {
+        String accountId = "unknownACC";
+        String from = "20/10/2018 19:00:00";
+        String to = "20/10/2018 12:00:00";
+
+        RelativeBalance actualBalance = getRelativeBalance(accountId, from, to);
+
+        RelativeBalance expectedBalance = new RelativeBalance();
+        assertEquals(expectedBalance, actualBalance);
+    }
+
+    private RelativeBalance getRelativeBalance(String accountId, String from, String to) {
+        LocalDateTime fromDate = LocalDateTime.parse(from, DATE_TIME_FORMAT);
+        LocalDateTime toDate = LocalDateTime.parse(to, DATE_TIME_FORMAT);
+
+        return txnRepo.getRelativeBalance(accountId, fromDate, toDate);
     }
 }

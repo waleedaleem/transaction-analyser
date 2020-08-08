@@ -28,11 +28,13 @@ public class RelativeBalance {
         if (o == null || getClass() != o.getClass())
             return false;
         RelativeBalance that = (RelativeBalance) o;
-        return amount.equals(that.amount) && transactionCount.equals(that.transactionCount);
+
+        return amount.get().compareTo(that.amount.get()) == 0
+            && transactionCount.get() == that.transactionCount.get();
     }
 
     @Override public int hashCode() {
-        return Objects.hash(amount, transactionCount);
+        return Objects.hash(amount.get(), transactionCount.get());
     }
 
     public BigDecimal getAmount() {
@@ -44,7 +46,7 @@ public class RelativeBalance {
     }
 
     @Override public String toString() {
-        return "RelativeBalance{" + "amount=" + amount + ", transactionCount=" + transactionCount
-            + '}';
+        return "RelativeBalance{" + "amount=" + amount.get() + ", transactionCount="
+            + transactionCount.get() + '}';
     }
 }
