@@ -3,6 +3,7 @@ package com.walid.transaction;
 import com.walid.transaction.repository.TransactionRepo;
 import com.walid.transaction.repository.TransactionRepoImpl;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -20,6 +21,6 @@ public class Main {
                 .println("usage: java -jar transaction-analyser <startup transactions CSV file>");
             System.exit(0);
         }
-        REPO.loadTransactions(args[0]);
+        REPO.loadTransactions(new FileInputStream(args[0]));
     }
 }

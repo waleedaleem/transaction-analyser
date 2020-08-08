@@ -4,8 +4,9 @@ import com.walid.transaction.entity.Transaction;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,13 +17,14 @@ import java.util.NoSuchElementException;
  */
 public class TransactionRepoImpl implements TransactionRepo {
 
-    private static List<Transaction> transactions = new LinkedList<>();
+    private List<Transaction> transactions = new LinkedList<>();
 
-    @Override public void loadTransactions(String transactionsFilePath) throws IOException {
-        Reader in = new FileReader(transactionsFilePath);
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
-        for (CSVRecord record : records) {
-            add(new Transaction(record));
+    @Override public void loadTransactions(InputStream transactionInputStream) throws IOException {
+        try (Reader in = new InputStreamReader(transactionInputStream)) {
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(in);
+            for (CSVRecord record : records) {
+                add(new Transaction(record));
+            }
         }
     }
 
