@@ -46,7 +46,9 @@ public class BalanceEnquiryControllerImpl implements BalanceEnquiryController {
     }
 
     @Override public void printRelativeBalance(RelativeBalance relativeBalance) {
-        System.out.println("Relative balance for the period is: " + relativeBalance.getAmount());
+        double moneyAmount = relativeBalance.getAmount().doubleValue();
+        System.out
+            .println("Relative balance for the period is: " + CURRENCY_FORMAT.format(moneyAmount));
         System.out.println(
             "Number of transactions included is: " + relativeBalance.getTransactionCount());
         System.out.printf("===================================%n%n");
@@ -54,6 +56,6 @@ public class BalanceEnquiryControllerImpl implements BalanceEnquiryController {
 
     private String prompt(String field) {
         System.out.printf("%s?%n>", field);
-        return reader.nextLine();
+        return reader.nextLine().trim();
     }
 }
