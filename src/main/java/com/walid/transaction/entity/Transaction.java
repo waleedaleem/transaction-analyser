@@ -1,17 +1,17 @@
 package com.walid.transaction.entity;
 
+import org.apache.commons.csv.CSVRecord;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
+import static com.walid.transaction.repository.TransactionRepo.DATE_TIME_FORMAT;
 
 /**
  * @author Walid Moustaf
  */
 public class Transaction {
-
-    String DATE_TIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
-    DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
     private String transactionId;
     private String fromAccountId;
@@ -20,6 +20,19 @@ public class Transaction {
     private BigDecimal amount;
     private Type transactionType;
     private String relatedTransaction;
+
+    public Transaction(CSVRecord record) {
+        int index = 0;
+        transactionId = record.get(index++);
+        fromAccountId = record.get(index++);
+        toAccountId = record.get(index++);
+        createAt = LocalDateTime.parse(record.get(index++), DATE_TIME_FORMAT);
+        amount = new BigDecimal(record.get(index++));
+        transactionType = Type.valueOf(record.get(index++));
+        if (index < record.size()) {
+            relatedTransaction = record.get(index++);
+        }
+    }
 
     public String getTransactionId() {
         return transactionId;
